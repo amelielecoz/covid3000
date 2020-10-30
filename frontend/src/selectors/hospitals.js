@@ -16,6 +16,9 @@ export const getHospitalsData = (day) => {
 };
 
 export const getDeltaDayBefore = (day) => {
-    const data_day = getHospitalsData(day);
-    
-}
+  const data_day = getHospitalsData(day);
+};
+
+export const getHistory = (number = 10) => {
+  // need to have the possibility to 
+};

@@ -13,10 +13,15 @@ const Dashboard = () => {
     dc: hospitalsData.dc - hospitalsDataDayBefore.dc,
     rad: hospitalsData.rad - hospitalsDataDayBefore.rad,
   };
+
+  // playing with dates to change format from 2020/10/22 to something else and to get the previous days
+
   return (
-    <div className="container mx-auto bg-gray-100">
-      <h2 className="text-2xl pl-4 font-semibold bg-white">Today, Oct 28</h2>
-      <div className="grid gap-4 grid-cols-3 p-4">
+    <div className="container mx-auto">
+      <h2 className="text-2xl pl-4 font-semibold bg-gray-800 text-white shadow">
+        Today, Oct 28
+      </h2>
+      <div className="grid gap-4 grid-cols-3 p-4 border-b shadow">
         <CounterCard
           number={hospitalsData.hosp}
           delta={delta.hosp}
