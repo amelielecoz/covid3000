@@ -15,10 +15,12 @@ export const getHospitalsData = (day) => {
   // may return everything in this function to avoid to parse 2time or to use some memoize func?
 };
 
+// return an object which contains the delta between specified day and the day before
 export const getDeltaDayBefore = (day) => {
   const data_day = getHospitalsData(day);
+  //TODO
 };
 
-export const getHistory = (number = 10) => {
-  // need to have the possibility to 
+export const getHistory = (day, numberDays = 10) => {
+  // get the last 10 days of data
 };
