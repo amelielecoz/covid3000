@@ -1,6 +1,7 @@
 import React from "react";
 
 import CounterCard from "../CounterCard";
+import HistoryRow from "../HistoryRow";
 
 import { getHospitalsData, getHistory } from "../../selectors/hospitals";
 
@@ -39,6 +40,12 @@ const Dashboard = () => {
           delta={delta.rad}
           text="retours"
         />
+      </div>
+      {/* history */}
+      <div>
+        {history.map((data) => (
+          <HistoryRow data={data} key={data.jour} />
+        ))}
       </div>
     </div>
   );

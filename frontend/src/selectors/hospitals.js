@@ -31,7 +31,7 @@ export const getHistory = (day, daysToHistory = 10) => {
   const filtered_data = hospitals_data.filter(
     ({ jour, sexe }) => sexe === 0 && new Date(jour) >= subDate
   );
-  return filtered_data.reduce((historyList, currentValue) => {
+  const unsorted_data = filtered_data.reduce((historyList, currentValue) => {
     if (!historyList.find((element) => element.jour === currentValue.jour))
       return [
         ...historyList,
@@ -56,4 +56,6 @@ export const getHistory = (day, daysToHistory = 10) => {
         } else return element;
       });
   }, []);
+  
+  return unsorted_data;
 };
