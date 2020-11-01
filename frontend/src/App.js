@@ -1,12 +1,20 @@
 import Dashboard from "./components/pages/Dashboard";
 
+import FiltersState from "./context/FiltersState";
+
 function App() {
+
+
+  
+
   return (
     <div className="App">
       <header className="h-12">
         <img className="h-12" src="logoSimple.png" alt="covid logo" />
       </header>
-      <Dashboard />
+      <FiltersState>
+        <Dashboard />
+      </FiltersState>
     </div>
   );
 }

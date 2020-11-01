@@ -3,10 +3,18 @@ import { subDays } from "date-fns";
 import hospitals_data from "../data/hospitals_data.json";
 
 // return hospital data from a specific day
-export const getHospitalsData = (day) => {
-  const filtered_data = hospitals_data.filter(
-    ({ jour, sexe }) => jour === day && sexe === 0
-  );
+export const getHospitalsData = (day, sexeValue = 0, depValue = 0) => {
+  let filtered_data;
+  if (depValue === 0) {
+    filtered_data = hospitals_data.filter(
+      ({ jour, sexe }) => jour === day && sexe === sexeValue
+    );
+  } else {
+    filtered_data = hospitals_data.filter(
+      ({ jour, sexe, dep }) =>
+        jour === day && sexe === sexeValue && dep === depValue
+    );
+  }
   // reducer to get a single object by adding all entries departement and sexes
   return filtered_data.reduce((acc, currentValue) => ({
     hosp: acc.hosp + currentValue.hosp,
@@ -25,11 +33,14 @@ export const getDeltaDayBefore = (day) => {
 };
 
 // take a date with format like "2020-10-28" and return the last 10 days of data with 1 line per day
-export const getHistory = (day, daysToHistory = 10) => {
+export const getHistory = (day, daysToHistory = 10, sexeValue = 0) => {
   const dayDate = new Date(day);
   const subDate = subDays(dayDate, daysToHistory);
   const filtered_data = hospitals_data.filter(
-    ({ jour, sexe }) => sexe === 0 && new Date(jour) >= subDate
+    ({ jour, sexe }) =>
+      sexe === sexeValue &&
+      new Date(jour) >= subDate &&
+      new Date(jour) <= dayDate
   );
   const unsorted_data = filtered_data.reduce((historyList, currentValue) => {
     if (!historyList.find((element) => element.jour === currentValue.jour))
@@ -56,6 +67,6 @@ export const getHistory = (day, daysToHistory = 10) => {
         } else return element;
       });
   }, []);
-  
-  return unsorted_data;
+  // todo sort data ? (for now it's older -> recent)
+  return unsorted_data.reverse();
 };
