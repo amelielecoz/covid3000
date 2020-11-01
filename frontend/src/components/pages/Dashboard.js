@@ -1,8 +1,11 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 
+import DayPickerInput from "react-day-picker/DayPickerInput";
+import "react-day-picker/lib/style.css";
+
+import HistoryRow from "../HistoryRow";
 import SelectSexe from "../SelectSexe";
 import SelectDepartement from "../SelectDepartement";
-import HistoryRow from "../HistoryRow";
 
 import { getHospitalsData, getHistory } from "../../selectors/hospitals";
 import FiltersContext from "../../context/filtersContext";
@@ -10,8 +13,7 @@ import DailySummary from "../DailySummary";
 
 const Dashboard = () => {
   const { sexe, departement } = useContext(FiltersContext);
-  console.log("departement" + departement);
-  console.log("rendering");
+  const [startDate, setStartDate] = useState(new Date());
 
   let history = getHistory("2020-10-28", 10, sexe, departement); // hardcoded history (but selector code is valid, may move server side)
   let hospitalsData = getHospitalsData("2020-10-28", sexe, departement); // hardcoded day | to be chosen in a selector
@@ -29,17 +31,27 @@ const Dashboard = () => {
 
   return (
     <div className="container mx-auto">
-      <h2 className="text-2xl pl-4 font-semibold bg-gray-800 text-white shadow">
-        Today, Oct 28
-      </h2>
+      {/* React Day Picker here http://react-day-picker.js.org/examples/input-date-fns */}
+      <div className="mx-4">
+        <DayPickerInput
+          placeholder="28/10/2020"
+          onDayChange={(day) => console.log(day)}
+        />
+      </div>
+
       {/* filters */}
       <div className="flex h-8 bg-gray-100 text-xs pt-1">
         <SelectSexe />
         <SelectDepartement />
       </div>
       {/* main infos */}
-      <DailySummary hospitalsData={hospitalsData} delta={delta} />
-
+      <div className="mx-4">
+        <DailySummary hospitalsData={hospitalsData} delta={delta} />
+      </div>
+      <div className="text-xs text-gray-500 bg-gray-300 mx-4 h-40 flex items-center justify-center">
+        chart placeholder chart.js
+      </div>
+      {/* <canvas id="myChart"></canvas>*/}
       {/* history */}
       <div>
         {history.map((data) => (

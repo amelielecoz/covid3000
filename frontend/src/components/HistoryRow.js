@@ -8,8 +8,8 @@ const HistoryRow = ({ data }) => {
   });
 
   return (
-    <div className="flex relative text-xs items-center bg-gray-200 mt-2 h-24">
-      <span className="absolute top-0 ml-1 font-bold text-gray-600">
+    <div className="flex relative text-xs items-center bg-gray-100 mt-2 h-24 rounded mx-4 border border-red-300">
+      <span className="absolute top-0 ml-1 font-semibold tracking-wide text-gray-600 uppercase">
         {displayDate}
       </span>
       <div className="flex items-center ml-2">
