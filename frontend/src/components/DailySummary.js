@@ -8,7 +8,7 @@ const DailySummary = ({ hospitalsData, delta }) => {
       <CounterCard
         number={hospitalsData.hosp}
         delta={delta.hosp}
-        text="hospitalisations"
+        text="hosp."
       />
       <CounterCard
         number={hospitalsData.rea}

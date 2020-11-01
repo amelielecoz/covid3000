@@ -3,13 +3,21 @@ import React from "react";
 const Counter = ({ number, delta, text }) => {
   const frenchFormatter = new Intl.NumberFormat("fr-FR");
 
-  const getFillColor = () => {
+  const getColor = (type) => {
+    if (delta < 0 || text === "retours") {
+      if (type === "text") return "text-green-500";
+      if (type === "border") return "border-green-500";
+      return "#48BB78";
+    }
     if (delta > 0) {
+      if (type === "text") return "text-red-500";
+      if (type === "border") return "border-red-500";
       return "#C53030";
-    } else if (delta === 0) {
-      return "orange"; // value TBD
-    } else {
-      return "green"; // value TBD
+    } // delta === 0
+    else {
+      if (type === "text") return "text-yellow-500";
+      if (type === "border") return "border-yellow-500";
+      return "#ECC94B";
     }
   };
 
@@ -18,18 +26,20 @@ const Counter = ({ number, delta, text }) => {
 
   return (
     <div
-      className={`w-24 h-20 bg-white rounded shadow border-b-4 border-red-500 text-center`}
+      className={`w-24 h-20 bg-white rounded shadow border-b-4 ${getColor(
+        "border"
+      )} text-center`}
     >
-      <div className="text-xs text-gray-600 font-semibold">{text}</div>
+      <div className="text-xs text-gray-700 font-semibold">{text}</div>
       <svg
         className="h-3 w-3 inline"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 20 20"
-        fill={getFillColor()}
+        fill={getColor()}
       >
         <path d="M7 10v8h6v-8h5l-8-8-8 8h5z" />
       </svg>
-      <span className="text-red-700 text-xs">
+      <span className={`text-xs ${getColor("text")}`}>
         ({frenchFormatter.format(delta)})
       </span>
       <div className="text-2xl text-black">

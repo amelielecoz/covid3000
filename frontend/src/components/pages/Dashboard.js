@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 
-
 import SelectSexe from "../SelectSexe";
 import SelectDepartement from "../SelectDepartement";
 import HistoryRow from "../HistoryRow";
@@ -10,11 +9,17 @@ import FiltersContext from "../../context/filtersContext";
 import DailySummary from "../DailySummary";
 
 const Dashboard = () => {
-  const { sexe, departement, setDepartement } = useContext(FiltersContext);
+  const { sexe, departement } = useContext(FiltersContext);
+  console.log("departement" + departement);
+  console.log("rendering");
 
   let history = getHistory("2020-10-28", 10, sexe, departement); // hardcoded history (but selector code is valid, may move server side)
-  let hospitalsData = getHospitalsData("2020-10-28", sexe); // hardcoded day | to be chosen in a selector
-  let hospitalsDataDayBefore = getHospitalsData("2020-10-27", sexe); // hardcoded day | to be day - 1 from the previous one
+  let hospitalsData = getHospitalsData("2020-10-28", sexe, departement); // hardcoded day | to be chosen in a selector
+  let hospitalsDataDayBefore = getHospitalsData(
+    "2020-10-27",
+    sexe,
+    departement
+  ); // hardcoded day | to be day - 1 from the previous one
   const delta = {
     hosp: hospitalsData.hosp - hospitalsDataDayBefore.hosp,
     rea: hospitalsData.rea - hospitalsDataDayBefore.rea,
