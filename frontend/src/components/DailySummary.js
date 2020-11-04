@@ -4,7 +4,7 @@ import CounterCard from "./CounterCard";
 
 const DailySummary = ({ hospitalsData, delta }) => {
   return (
-    <div className="grid gap-4 grid-cols-3 p-4 border-b ">
+    <div className="grid gap-4 grid-cols-3">
       <CounterCard
         number={hospitalsData.hosp}
         delta={delta.hosp}

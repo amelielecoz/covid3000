@@ -4,6 +4,7 @@ import DayPickerInput from "react-day-picker/DayPickerInput";
 import "react-day-picker/lib/style.css";
 
 import HistoryRow from "../HistoryRow";
+import LineChart from "../charts/LineChart";
 import SelectSexe from "../SelectSexe";
 import SelectDepartement from "../SelectDepartement";
 
@@ -11,11 +12,13 @@ import { getHospitalsData, getHistory } from "../../selectors/hospitals";
 import FiltersContext from "../../context/filtersContext";
 import DailySummary from "../DailySummary";
 
+import "./Dashboard.css";
+
 const Dashboard = () => {
   const { sexe, departement } = useContext(FiltersContext);
-  const [startDate, setStartDate] = useState(new Date());
+  //const [startDate, setStartDate] = useState(new Date());
 
-  let history = getHistory("2020-10-28", 10, sexe, departement); // hardcoded history (but selector code is valid, may move server side)
+  let history = getHistory("2020-10-28", 10, sexe, departement); // hardcoded history (but selector code is valid)
   let hospitalsData = getHospitalsData("2020-10-28", sexe, departement); // hardcoded day | to be chosen in a selector
   let hospitalsDataDayBefore = getHospitalsData(
     "2020-10-27",
@@ -32,11 +35,16 @@ const Dashboard = () => {
   return (
     <div className="container mx-auto">
       {/* React Day Picker here http://react-day-picker.js.org/examples/input-date-fns */}
-      <div className="mx-4">
-        <DayPickerInput
-          placeholder="28/10/2020"
-          onDayChange={(day) => console.log(day)}
-        />
+      <div className="flex flex-row justify-between items-center ">
+        <div className="ml-4 text-gray-800 text-lg">
+          <DayPickerInput
+            placeholder="28 oct 2020"
+            fromMonth={new Date(2020, 3)}
+            toMonth={new Date()}
+            onDayChange={(day) => console.log(day)}
+          />
+        </div>
+        <img className="h-12" src="logoSimple.png" alt="covid logo" />
       </div>
 
       {/* filters */}
@@ -45,18 +53,20 @@ const Dashboard = () => {
         <SelectDepartement />
       </div>
       {/* main infos */}
-      <div className="mx-4">
+      <div className="mx-4 my-4">
         <DailySummary hospitalsData={hospitalsData} delta={delta} />
       </div>
-      <div className="text-xs text-gray-500 bg-gray-300 mx-4 h-40 flex items-center justify-center">
-        chart placeholder chart.js
+      <div className="mx-4">
+        <LineChart history={history} />
       </div>
-      {/* <canvas id="myChart"></canvas>*/}
       {/* history */}
       <div>
-        {history.map((data) => (
-          <HistoryRow data={data} key={data.jour} />
-        ))}
+        {history
+          .slice()
+          .reverse()
+          .map((data) => (
+            <HistoryRow data={data} key={data.jour} />
+          ))}
       </div>
     </div>
   );

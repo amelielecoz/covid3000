@@ -85,5 +85,5 @@ export const getHistory = (
       });
   }, []);
   // todo sort data ? (for now it's older -> recent)
-  return unsorted_data.reverse();
+  return unsorted_data;
 };

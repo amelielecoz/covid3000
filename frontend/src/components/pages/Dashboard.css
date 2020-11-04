@@ -1,0 +1,13 @@
+.DayPickerInput > input {
+  /* border: 1px solid black;
+  border-radius: 3px;
+  text-align: center;
+  width: 100px;
+  color: red; */
+  font-weight: 600;
+}
+
+.DayPickerInput > input::placeholder {
+  color: black;
+  font-weight: bold;
+}
