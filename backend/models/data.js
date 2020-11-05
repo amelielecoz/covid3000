@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const dataSchema = new Schema(
   {
     dep: {
-      type: String,
+      type: Schema.Types.Mixed,
       required: true
     },
     sexe: {

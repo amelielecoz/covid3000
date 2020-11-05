@@ -16,7 +16,7 @@ app.use(dataRoutes);
 
 mongoose
   .connect(MONGODB_URI)
-  .then(result => {
+  .then(() => {
     app.listen(4000);
   })
   .catch(err => {
