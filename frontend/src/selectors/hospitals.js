@@ -1,9 +1,14 @@
 import { subDays } from "date-fns";
 
-import hospitals_data from "../data/hospitals_data.json";
+//import hospitals_data from "../data/hospitals_data.json";
 
 // return hospital data from a specific day
-export const getHospitalsData = (day, sexeValue = 0, depValue = "tous") => {
+export const getHospitalsData = (
+  hospitals_data,
+  day,
+  sexeValue = 0,
+  depValue = "tous"
+) => {
   let filtered_data;
   if (depValue === "tous") {
     filtered_data = hospitals_data.filter(
@@ -25,41 +30,24 @@ export const getHospitalsData = (day, sexeValue = 0, depValue = "tous") => {
   // may return everything in this function to avoid to parse 2time or to use some memoize func?
 };
 
-// return an object which contains the delta between specified day and the day before
-// this function may be included in getHospitalsData
-export const getDeltaDayBefore = (day) => {
-  const data_day = getHospitalsData(day);
-  //TODO
-};
-
 // take a date with format like "2020-10-28" and return the last 10 days of data with 1 line per day
 export const getHistory = (
-  day,
+  hospitals_data,
+  dayDate,
   daysToHistory = 10,
   sexeValue = 0,
   depValue = "tous"
 ) => {
-  const dayDate = new Date(day);
   const subDate = subDays(dayDate, daysToHistory);
 
-  let filtered_data;
-  if (depValue === "tous") {
-    filtered_data = hospitals_data.filter(
-      ({ jour, sexe }) =>
-        sexe === sexeValue &&
-        new Date(jour) >= subDate &&
-        new Date(jour) <= dayDate
-    );
-  } else {
-    filtered_data = hospitals_data.filter(
-      ({ jour, sexe, dep }) =>
-        sexe === sexeValue &&
-        dep.toString() === depValue &&
-        new Date(jour) >= subDate &&
-        new Date(jour) <= dayDate
-    );
-  }
-  const unsorted_data = filtered_data.reduce((historyList, currentValue) => {
+  const filtered_data = hospitals_data.filter(
+    ({ jour, sexe, dep }) =>
+      sexe === sexeValue &&
+      (depValue === "tous" || dep.toString() === depValue) &&
+      new Date(jour) >= subDate &&
+      new Date(jour) <= dayDate
+  );
+  return filtered_data.reduce((historyList, currentValue) => {
     if (!historyList.find((element) => element.jour === currentValue.jour))
       return [
         ...historyList,
@@ -84,6 +72,4 @@ export const getHistory = (
         } else return element;
       });
   }, []);
-  // todo sort data ? (for now it's older -> recent)
-  return unsorted_data;
 };

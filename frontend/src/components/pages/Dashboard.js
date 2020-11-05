@@ -14,17 +14,33 @@ import DailySummary from "../DailySummary";
 
 import "./Dashboard.css";
 
-const Dashboard = () => {
-  const { sexe, departement } = useContext(FiltersContext);
-  //const [startDate, setStartDate] = useState(new Date());
+const Dashboard = ({ hospitalsGlobalData }) => {
+  const { sexe, departement, startDate, setStartDate } = useContext(
+    FiltersContext
+  );
 
-  let history = getHistory("2020-10-28", 10, sexe, departement); // hardcoded history (but selector code is valid)
-  let hospitalsData = getHospitalsData("2020-10-28", sexe, departement); // hardcoded day | to be chosen in a selector
+  let history = getHistory(
+    hospitalsGlobalData,
+    startDate,
+    365,
+    sexe,
+    departement
+  );
+  console.log("perf1");
+  let hospitalsData = getHospitalsData(
+    hospitalsGlobalData,
+    "2020-10-28",
+    sexe,
+    departement
+  ); // hardcoded day | to be chosen in a selector
+  console.log("perf2");
   let hospitalsDataDayBefore = getHospitalsData(
+    hospitalsGlobalData,
     "2020-10-27",
     sexe,
     departement
   ); // hardcoded day | to be day - 1 from the previous one
+  console.log("perf3");
   const delta = {
     hosp: hospitalsData.hosp - hospitalsDataDayBefore.hosp,
     rea: hospitalsData.rea - hospitalsDataDayBefore.rea,
@@ -38,10 +54,10 @@ const Dashboard = () => {
       <div className="flex flex-row justify-between items-center ">
         <div className="ml-4 text-gray-800 text-lg">
           <DayPickerInput
-            placeholder="28 oct 2020"
+            placeholder={startDate.toLocaleDateString("fr-Fr")}
             fromMonth={new Date(2020, 3)}
             toMonth={new Date()}
-            onDayChange={(day) => console.log(day)}
+            onDayChange={(day) => setStartDate(day)}
           />
         </div>
         <img className="h-12" src="logoSimple.png" alt="covid logo" />
