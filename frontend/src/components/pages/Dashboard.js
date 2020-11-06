@@ -1,8 +1,10 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useRef } from "react";
 
+import * as d3 from "d3";
 import DayPickerInput from "react-day-picker/DayPickerInput";
 import "react-day-picker/lib/style.css";
 
+import DailySummary from "../DailySummary";
 import HistoryRow from "../HistoryRow";
 import LineChart from "../charts/LineChart";
 import SelectSexe from "../SelectSexe";
@@ -10,7 +12,6 @@ import SelectDepartement from "../SelectDepartement";
 
 import { getHospitalsData, getHistory } from "../../selectors/hospitals";
 import FiltersContext from "../../context/filtersContext";
-import DailySummary from "../DailySummary";
 
 import "./Dashboard.css";
 
@@ -29,14 +30,14 @@ const Dashboard = ({ hospitalsGlobalData }) => {
   console.log("perf1");
   let hospitalsData = getHospitalsData(
     hospitalsGlobalData,
-    "2020-10-28",
+    "2020-11-04",
     sexe,
     departement
   ); // hardcoded day | to be chosen in a selector
   console.log("perf2");
   let hospitalsDataDayBefore = getHospitalsData(
     hospitalsGlobalData,
-    "2020-10-27",
+    "2020-11-03",
     sexe,
     departement
   ); // hardcoded day | to be day - 1 from the previous one
@@ -47,6 +48,22 @@ const Dashboard = ({ hospitalsGlobalData }) => {
     dc: hospitalsData.dc - hospitalsDataDayBefore.dc,
     rad: hospitalsData.rad - hospitalsDataDayBefore.rad,
   };
+
+  /* D3 Practice*/
+  // const svgEl = useRef(null);
+  // const rectWidth = 50;
+  // // console.log(d3.select(svgEl.current).selectAll("rect"));
+  // d3.select(svgEl.current)
+  //   .selectAll("rect")
+  //   .data(history.slice(0, 10).map(({ hosp }) => hosp))
+  //   .attr("x", (d, i) => i * rectWidth)
+  // .attr('y', d => 100 - d) // 100 = height of the svg
+  //   .attr("height", (d) => d / 100)
+  //   .attr("width", rectWidth)
+  //   .attr("stroke-width", 3)
+  //   .attr("stroke-dasharray", "5 5")
+  //   .attr("stroke", "plum")
+  //   .attr("fill", "black");
 
   return (
     <div className="container mx-auto">
@@ -75,6 +92,16 @@ const Dashboard = ({ hospitalsGlobalData }) => {
       <div className="mx-4">
         <LineChart history={history} />
       </div>
+      {/* d3 practice */}
+      {/* <svg className="bg-red-300 mx-4" ref={svgEl} height="170" width="343">
+        {history
+          .slice()
+          .reverse()
+          .slice(0, 10)
+          .map((data) => (
+            <rect />
+          ))}
+      </svg> */}
       {/* history */}
       <div>
         {history
