@@ -50,20 +50,44 @@ const Dashboard = ({ hospitalsGlobalData }) => {
   };
 
   /* D3 Practice*/
-  // const svgEl = useRef(null);
-  // const rectWidth = 50;
-  // // console.log(d3.select(svgEl.current).selectAll("rect"));
-  // d3.select(svgEl.current)
-  //   .selectAll("rect")
-  //   .data(history.slice(0, 10).map(({ hosp }) => hosp))
-  //   .attr("x", (d, i) => i * rectWidth)
-  // .attr('y', d => 100 - d) // 100 = height of the svg
-  //   .attr("height", (d) => d / 100)
-  //   .attr("width", rectWidth)
-  //   .attr("stroke-width", 3)
-  //   .attr("stroke-dasharray", "5 5")
-  //   .attr("stroke", "plum")
-  //   .attr("fill", "black");
+  const svgWidth = 343;
+  const svgHeight = 170;
+  const svgEl = useRef(null);
+  // const displayHistoryHosp = history
+  //   .slice(history.length - 10, history.length)
+  //   .map((d) => d.hosp);
+
+  // console.log(displayHistoryHosp);
+  // const xScale = d3
+  //   .scaleBand()
+  //   .domain(displayHistoryHosp.keys())
+  //   .range([0, svgWidth])
+  //   .padding(0.1); // fix padding for now
+
+  // const [min, max] = d3.extent(displayHistoryHosp, (d) => d);
+
+  // const yScale = d3.scaleLinear().domain([min, max]).range([svgHeight, 0]);
+
+  // setInterval(() => {
+  //   d3.select(svgEl.current)
+  //     .selectAll("rect")
+  //     .data(displayHistoryHosp)
+  //     .enter()
+  //     .append("rect")
+  //     .attr("x", (d, i) => xScale(i))
+  //     .attr("y", (d) => yScale(d))
+  //     .attr("height", (d) => svgHeight - yScale(d))
+  //     .attr("width", xScale.bandwidth())
+  //     .attr("fill", "black")
+  //     .attr("stroke-width", 3)
+  //     .attr(
+  //       "stroke-dasharray",
+  //       `${Math.floor(Math.random() * 6) + 1} ${
+  //         Math.floor(Math.random() * 6) + 1
+  //       }`
+  //     )
+  //     .attr("stroke", "plum");
+  // }, 1000);
 
   return (
     <div className="container mx-auto">
@@ -93,15 +117,12 @@ const Dashboard = ({ hospitalsGlobalData }) => {
         <LineChart history={history} />
       </div>
       {/* d3 practice */}
-      {/* <svg className="bg-red-300 mx-4" ref={svgEl} height="170" width="343">
-        {history
-          .slice()
-          .reverse()
-          .slice(0, 10)
-          .map((data) => (
-            <rect />
-          ))}
-      </svg> */}
+      <svg
+        className="bg-gray-300 mx-4"
+        ref={svgEl}
+        height={svgHeight}
+        width={svgWidth}
+      ></svg>
       {/* history */}
       <div>
         {history
