@@ -5,7 +5,8 @@ const LineChart = ({ history }) => {
   const canvasRef = useRef(null);
 
   useEffect(() => {
-    const myChart = new Chart(canvasRef.current, {
+    
+    new Chart(canvasRef.current, {
       type: "line",
 
       data: {

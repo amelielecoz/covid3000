@@ -1,9 +1,9 @@
-import React, { useContext, useRef } from "react";
+import React, { useContext } from "react";
 
-import * as d3 from "d3";
 import DayPickerInput from "react-day-picker/DayPickerInput";
 import "react-day-picker/lib/style.css";
 
+import BarChart from "../charts/BarChart";
 import DailySummary from "../DailySummary";
 import HistoryRow from "../HistoryRow";
 import LineChart from "../charts/LineChart";
@@ -49,46 +49,6 @@ const Dashboard = ({ hospitalsGlobalData }) => {
     rad: hospitalsData.rad - hospitalsDataDayBefore.rad,
   };
 
-  /* D3 Practice*/
-  const svgWidth = 343;
-  const svgHeight = 170;
-  const svgEl = useRef(null);
-  // const displayHistoryHosp = history
-  //   .slice(history.length - 10, history.length)
-  //   .map((d) => d.hosp);
-
-  // console.log(displayHistoryHosp);
-  // const xScale = d3
-  //   .scaleBand()
-  //   .domain(displayHistoryHosp.keys())
-  //   .range([0, svgWidth])
-  //   .padding(0.1); // fix padding for now
-
-  // const [min, max] = d3.extent(displayHistoryHosp, (d) => d);
-
-  // const yScale = d3.scaleLinear().domain([min, max]).range([svgHeight, 0]);
-
-  // setInterval(() => {
-  //   d3.select(svgEl.current)
-  //     .selectAll("rect")
-  //     .data(displayHistoryHosp)
-  //     .enter()
-  //     .append("rect")
-  //     .attr("x", (d, i) => xScale(i))
-  //     .attr("y", (d) => yScale(d))
-  //     .attr("height", (d) => svgHeight - yScale(d))
-  //     .attr("width", xScale.bandwidth())
-  //     .attr("fill", "black")
-  //     .attr("stroke-width", 3)
-  //     .attr(
-  //       "stroke-dasharray",
-  //       `${Math.floor(Math.random() * 6) + 1} ${
-  //         Math.floor(Math.random() * 6) + 1
-  //       }`
-  //     )
-  //     .attr("stroke", "plum");
-  // }, 1000);
-
   return (
     <div className="container mx-auto">
       {/* React Day Picker here http://react-day-picker.js.org/examples/input-date-fns */}
@@ -117,12 +77,9 @@ const Dashboard = ({ hospitalsGlobalData }) => {
         <LineChart history={history} />
       </div>
       {/* d3 practice */}
-      <svg
-        className="bg-gray-300 mx-4"
-        ref={svgEl}
-        height={svgHeight}
-        width={svgWidth}
-      ></svg>
+      <div className="mx-4">
+        <BarChart history={history} />
+      </div>
       {/* history */}
       <div>
         {history
