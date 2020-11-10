@@ -1,3 +1,15 @@
 rect {
   transition: all 1s ease;
 }
+
+g {
+  position: relative;
+}
+
+.nbHosp {
+  fill: red;
+  stroke: white;
+  font-size: 9px;
+
+  transform: rotate(90deg);
+}
