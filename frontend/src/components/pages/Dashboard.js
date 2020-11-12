@@ -3,7 +3,7 @@ import React, { useContext } from "react";
 import DayPickerInput from "react-day-picker/DayPickerInput";
 import "react-day-picker/lib/style.css";
 
-import BarChart from "../charts/BarChart";
+import AreaChart from "../charts/AreaChart";
 import DailySummary from "../DailySummary";
 import HistoryRow from "../HistoryRow";
 import LineChart from "../charts/LineChart";
@@ -73,22 +73,22 @@ const Dashboard = ({ hospitalsGlobalData }) => {
       <div className="mx-4 my-4">
         <DailySummary hospitalsData={hospitalsData} delta={delta} />
       </div>
-      <div className="mx-4">
+      {/* <div className="mx-4">
         <LineChart history={history} />
-      </div>
+      </div> */}
       {/* d3 practice */}
       <div className="mx-4">
-        <BarChart history={history} />
+        <AreaChart history={history} />
       </div>
       {/* history */}
-      <div>
+      {/* <div>
         {history
           .slice()
           .reverse()
           .map((data) => (
             <HistoryRow data={data} key={data.jour} />
           ))}
-      </div>
+      </div> */}
     </div>
   );
 };

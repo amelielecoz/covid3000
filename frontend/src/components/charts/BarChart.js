@@ -1,3 +1,5 @@
+// OLD ENTER/UPDATE/EXIT D3 PATTERN
+
 import React, { useRef } from "react";
 import * as d3 from "d3";
 
@@ -20,7 +22,7 @@ const BarChart = ({ history }) => {
   //.padding(0.1); // fix padding for now
 
   const max = d3.max(historyHosp, (d) => d.hosp);
-  const min = d3.min(historyHosp, (d) => d.hosp) - 40; //
+  const min = d3.min(historyHosp, (d) => d.hosp); // TODO Change the range of min to have something displayable
 
   const yScale = d3.scaleLinear().domain([min, max]).range([svgHeight, 0]);
 
@@ -35,19 +37,25 @@ const BarChart = ({ history }) => {
     .attr("height", (d) => svgHeight - yScale(d.hosp))
     .attr("y", (d) => yScale(d.hosp))
     .attr("width", xScale.bandwidth())
-    .attr("x", (d, i) => xScale(i))
-    .attr("stroke-width", 3)
+    // .attr("x", (d, i) => xScale(i))
+    .attr("stroke-width", 1)
     .attr("stroke", "blue")
     .attr("fill", "blue")
     .attr("fill-opacity", ".6");
-  g.select(".nbHosp").text((d) => d.hosp);
+  g.select(".nbHosp")
+    .text((d) => d.hosp)
+    .attr(
+      "transform",
+      (d, i) => `translate(0, ${(svgHeight + yScale(d.hosp)) / 2})`
+    );
   g.select(".jour").text((d) => d.jour);
 
   // entering, just once the first time it loads, then only requested (height and y) will be updated
   const target = g
     .enter()
     .append("g")
-    .attr("x", (d, i) => xScale(i));
+    .attr("transform", (d, i) => `translate(${xScale(i)})`);
+
   target
     .append("rect")
     .attr("y", (d) => yScale(d.hosp))
@@ -57,15 +65,19 @@ const BarChart = ({ history }) => {
     .append("text")
     .classed("nbHosp", true)
     .text((d) => d.hosp)
-    .attr("x", (d, i) => xScale(i) + xScale.bandwidth() / 2)
-    .attr("y", svgHeight);
+    .attr("x", (d) => 7)
+    .attr(
+      "transform",
+      (d, i) => `translate(0, ${(svgHeight + yScale(d.hosp)) / 2})`
+    );
+
+  // .attr("text-anchor", "middle");
   target
     .append("text")
     .classed("jour", true)
     .text((d) => d.jour);
 
   // removing
-  console.log(g.exit());
   g.exit().remove(); //data that exits the initial array
 
   return (

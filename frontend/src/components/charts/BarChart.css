@@ -1,4 +1,6 @@
-rect {
+rect,
+path,
+svg {
   transition: all 1s ease;
 }
 
@@ -6,10 +8,28 @@ g {
   position: relative;
 }
 
+text {
+  transition: transform 1s;
+}
+
 .nbHosp {
   fill: red;
   stroke: white;
   font-size: 9px;
+}
 
-  transform: rotate(90deg);
+g.tick > text {
+  font-size: 0.5rem;
+}
+
+@media only screen and (min-width: 640px) {
+  g.tick > text {
+    font-size: 0.3rem;
+  }
+}
+
+@media only screen and (min-width: 1280px) {
+  g.tick > text {
+    font-size: 0.15rem;
+  }
 }
