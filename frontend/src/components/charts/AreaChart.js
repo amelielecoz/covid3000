@@ -93,24 +93,18 @@ const BarChart = ({ history }) => {
     //TOOLTIP
     const tooltip = svg.append("g");
     svg.on("touchmove mousemove", function (event) {
-      //   const currentXposition = d3.pointer(event, this)[0];
-      //   const time = x.invert(currentXposition);
-      //   const bisectDate = d3.bisector((d) => d.jour).left;
-      //   const dataIndex = bisectDate(historyHosp, time, 1);
-      //   console.log(dataIndex);
-
       const { jour, hosp } = bisect(d3.pointer(event, this)[0]);
       console.log(jour);
       console.log(hosp);
 
       tooltip.attr("transform", `translate(${x(jour)},${y(hosp)})`).call(
         callout,
-        `${formatValue(hosp)}
+        `${hosp}
       ${formatDate(jour)}`
       );
     });
 
-    // svg.on("touchend mouseleave", () => tooltip.call(callout, null));
+    svg.on("touchend mouseleave", () => tooltip.call(callout, null));
 
     // // ** Extra code here ** //
     const bisectDate = d3.bisector((d) => d.jour).left;
@@ -173,10 +167,6 @@ const callout = (g, value) => {
     `M${-w / 2 - 10},5H-5l5,-5l5,5H${w / 2 + 10}v${h + 20}h-${w + 20}z`
   );
 };
-
-function formatValue(value) {
-  return value;
-}
 
 function formatDate(date) {
   return date.toLocaleString("fr", {
