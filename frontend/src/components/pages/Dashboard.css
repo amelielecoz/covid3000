@@ -5,9 +5,11 @@
   width: 100px;
   color: red; */
   font-weight: 600;
+  width: 100px;
+  font-size: medium;
 }
 
 .DayPickerInput > input::placeholder {
   color: black;
-  font-weight: bold;
+  font-size: medium;
 }

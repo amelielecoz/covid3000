@@ -106,7 +106,6 @@ const BarChart = ({ history }) => {
 
     svg.on("touchend mouseleave", () => tooltip.call(callout, null));
 
-    // // ** Extra code here ** //
     const bisectDate = d3.bisector((d) => d.jour).left;
     function bisect(mx) {
       const jour = x.invert(mx);
@@ -135,7 +134,7 @@ const callout = (g, value) => {
 
   g.style("display", null)
     .style("pointer-events", "none")
-    .style("font", "5px sans-serif");
+    .attr("class")
 
   const path = g
     .selectAll("path")

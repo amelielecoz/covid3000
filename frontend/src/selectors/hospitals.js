@@ -33,19 +33,19 @@ export const getHospitalsData = (
 // take a date with format like "2020-10-28" and return the last 10 days of data with 1 line per day
 export const getHistory = (
   hospitals_data,
-  dayDate,
-  daysToHistory = 10,
+  startDate,
+  endDate,
   sexeValue = 0,
   depValue = "tous"
 ) => {
-  const subDate = subDays(dayDate, daysToHistory);
+  //const subDate = subDays(endDate, daysToHistory);
 
   const filtered_data = hospitals_data.filter(
     ({ jour, sexe, dep }) =>
       sexe === sexeValue &&
       (depValue === "tous" || dep.toString() === depValue) &&
-      new Date(jour) >= subDate &&
-      new Date(jour) <= dayDate
+      new Date(jour) >= startDate &&
+      new Date(jour) <= endDate
   );
   return filtered_data.reduce((historyList, currentValue) => {
     if (!historyList.find((element) => element.jour === currentValue.jour))

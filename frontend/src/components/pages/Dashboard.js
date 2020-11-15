@@ -5,8 +5,8 @@ import "react-day-picker/lib/style.css";
 
 import AreaChart from "../charts/AreaChart";
 import DailySummary from "../DailySummary";
-import HistoryRow from "../HistoryRow";
-import LineChart from "../charts/LineChart";
+// import HistoryRow from "../HistoryRow";
+// import LineChart from "../charts/LineChart";
 import SelectSexe from "../SelectSexe";
 import SelectDepartement from "../SelectDepartement";
 
@@ -16,14 +16,19 @@ import FiltersContext from "../../context/filtersContext";
 import "./Dashboard.css";
 
 const Dashboard = ({ hospitalsGlobalData }) => {
-  const { sexe, departement, startDate, setStartDate } = useContext(
-    FiltersContext
-  );
+  const {
+    sexe,
+    departement,
+    startDate,
+    setStartDate,
+    endDate,
+    setEndDate,
+  } = useContext(FiltersContext);
 
   let history = getHistory(
     hospitalsGlobalData,
     startDate,
-    365,
+    endDate,
     sexe,
     departement
   );
@@ -52,16 +57,28 @@ const Dashboard = ({ hospitalsGlobalData }) => {
   return (
     <div className="container mx-auto">
       {/* React Day Picker here http://react-day-picker.js.org/examples/input-date-fns */}
-      <div className="flex flex-row justify-between items-center ">
-        <div className="ml-4 text-gray-800 text-lg">
-          <DayPickerInput
-            placeholder={startDate.toLocaleDateString("fr-Fr")}
-            fromMonth={new Date(2020, 3)}
-            toMonth={new Date()}
-            onDayChange={(day) => setStartDate(day)}
-          />
+      <div className="flex flex-row justify-between">
+        <div className="flex flex-row">
+          <div className="ml-4 text-gray-800 text-lg">
+            <div className="text-xs">Start Date</div>
+            <DayPickerInput
+              placeholder={startDate.toLocaleDateString("fr-Fr")}
+              fromMonth={new Date(2020, 3)}
+              toMonth={new Date()}
+              onDayChange={(day) => setStartDate(day)}
+            />
+          </div>
+          <div className="ml-4 text-gray-800 text-lg">
+            <div className="text-xs">End Date</div>
+            <DayPickerInput
+              placeholder={endDate.toLocaleDateString("fr-Fr")}
+              fromMonth={new Date(2020, 3)}
+              toMonth={new Date()}
+              onDayChange={(day) => setEndDate(day)}
+            />
+          </div>
         </div>
-        <img className="h-12" src="logoSimple.png" alt="covid logo" />
+        {/* <img className="h-12" src="logoSimple.png" alt="covid logo" /> */}
       </div>
 
       {/* filters */}
