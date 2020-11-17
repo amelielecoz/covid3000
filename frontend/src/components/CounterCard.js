@@ -1,10 +1,14 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
+import gsap from "gsap";
+import "./CounterCard.css";
 
 import GraphContext from "../context/graphContext";
 
 const Counter = ({ number, delta, text, type }) => {
   const { setType } = useContext(GraphContext);
   const frenchFormatter = new Intl.NumberFormat("fr-FR");
+  const counterRef = useRef(null);
+  const fionaRef = useRef(null);
 
   // #TODO
   // RENDRE DYNAMIQUE LES COULEURS DE BORDURES et le svg conditionnel selon le delta
@@ -26,17 +30,35 @@ const Counter = ({ number, delta, text, type }) => {
     }
   };
 
+  const theDoom = () => {
+    var tl = gsap.timeline();
+    tl.to(fionaRef.current, { opacity: 1, duration: 0.3 });
+    tl.to(fionaRef.current, { scale: 3, duration: 1, y: 200 });
+    tl.to(fionaRef.current, { opacity: 0, delay: 2, duration: 0.5 });
+
+    // gsap.to(counterRef.current, { transform, delay: 1 });
+  };
+
   return (
     <div
+      ref={counterRef}
+      onMouseEnter={theDoom}
       onClick={() => {
         setType(type);
         console.log("type");
       }}
-      className={`w-24 pb-1  bg-white rounded shadow border-b-4 ${getColor(
+      className={`relative w-24 pb-1  bg-white rounded shadow border-b-4 ${getColor(
         "border"
-      )} text-center transition duration-100 ease-in-out hover:shadow-xl hover:bg-blue-100 transform hover:-translate-y-1 hover:scale-110 `}
+      )} text-center  `}
+      // transition duration-100 ease-in-out hover:shadow-xl hover:bg-blue-100 transform hover:-translate-y-1 hover:scale-110
     >
       <div className="h-2 text-xs text-gray-700 font-semibold">{text}</div>
+      <div>
+        <img ref={fionaRef} className="fiora" src="/img/fiora.png" alt="" />
+        <div className="absolute opacity-0 dialog border border-black rounded bg-white z-50">
+          WTF
+        </div>
+      </div>
       <div className="my-1">
         <svg
           className="h-3 w-3 inline "
