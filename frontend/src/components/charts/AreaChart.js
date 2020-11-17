@@ -181,17 +181,17 @@ function formatDate(date) {
 function getColor(type) {
   switch (type) {
     case "hosp":
-      return "steelblue";
+      return "#2D3748";
     case "rea":
-      return "#F6E05E";
+      return "#2D3748";
     case "dc":
-      return "#553C9A";
+      return "#2D3748";
     case "rad":
-      return "#48BB78";
+      return "#2D3748";
     case "T":
-      return "#667EEA";
+      return "#2D3748";
     case "P":
-      return "#ED64A6";
+      return "#2D3748";
     default:
       return "black";
   }
