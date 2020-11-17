@@ -3,32 +3,32 @@ import { subDays } from "date-fns";
 //import hospitals_data from "../data/hospitals_data.json";
 
 // return hospital data from a specific day
-export const getHospitalsData = (
-  hospitals_data,
-  day,
-  sexeValue = 0,
-  depValue = "tous"
-) => {
-  let filtered_data;
-  if (depValue === "tous") {
-    filtered_data = hospitals_data.filter(
-      ({ jour, sexe }) => jour === day && sexe === sexeValue
-    );
-  } else {
-    filtered_data = hospitals_data.filter(
-      ({ jour, sexe, dep }) =>
-        jour === day && sexe === sexeValue && dep.toString() === depValue
-    );
-  }
-  // reducer to get a single object by adding all entries departement and sexes
-  return filtered_data.reduce((acc, currentValue) => ({
-    hosp: acc.hosp + currentValue.hosp,
-    rea: acc.rea + currentValue.rea,
-    rad: acc.rad + currentValue.rad,
-    dc: acc.dc + currentValue.dc,
-  }));
-  // may return everything in this function to avoid to parse 2time or to use some memoize func?
-};
+// export const getHospitalsData = (
+//   hospitals_data,
+//   day,
+//   sexeValue = 0,
+//   depValue = "tous"
+// ) => {
+//   let filtered_data;
+//   if (depValue === "tous") {
+//     filtered_data = hospitals_data.filter(
+//       ({ jour, sexe }) => jour === day && sexe === sexeValue
+//     );
+//   } else {
+//     filtered_data = hospitals_data.filter(
+//       ({ jour, sexe, dep }) =>
+//         jour === day && sexe === sexeValue && dep.toString() === depValue
+//     );
+//   }
+//   // reducer to get a single object by adding all entries departement and sexes
+//   return filtered_data.reduce((acc, currentValue) => ({
+//     hosp: acc.hosp + currentValue.hosp,
+//     rea: acc.rea + currentValue.rea,
+//     rad: acc.rad + currentValue.rad,
+//     dc: acc.dc + currentValue.dc,
+//   }));
+//   // may return everything in this function to avoid to parse 2time or to use some memoize func?
+// };
 
 // take a date with format like "2020-10-28" and return the last 10 days of data with 1 line per day
 export const getHistory = (

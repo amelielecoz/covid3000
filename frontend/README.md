@@ -1,9 +1,15 @@
 # Intro
 
+Suivi de l'épidémie Covid 19 en France
+
 # Technos
 
-React
+React / Hooks
 Tailwind
+D3
+
+# Data
+https://www.data.gouv.fr/fr/datasets/donnees-hospitalieres-relatives-a-lepidemie-de-covid-19/
 
 # Utilities
 

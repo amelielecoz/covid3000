@@ -10,6 +10,7 @@
     "d3": "^6.2.0",
     "date-fns": "^2.16.1",
     "react": "^17.0.1",
+    "react-calendar": "^3.2.0",
     "react-day-picker": "^7.4.8",
     "react-dom": "^17.0.1",
     "react-scripts": "4.0.0",

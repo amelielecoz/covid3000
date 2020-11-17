@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 
 import DayPickerInput from "react-day-picker/DayPickerInput";
 import "react-day-picker/lib/style.css";
@@ -10,12 +10,14 @@ import DailySummary from "../DailySummary";
 import SelectSexe from "../SelectSexe";
 import SelectDepartement from "../SelectDepartement";
 
-import { getHospitalsData, getHistory } from "../../selectors/hospitals";
+import { getHistory } from "../../selectors/hospitals";
+import { getTestsData } from "../../selectors/tests";
 import FiltersContext from "../../context/filtersContext";
+import GraphContext from "../../context/graphContext";
 
 import "./Dashboard.css";
 
-const Dashboard = ({ hospitalsGlobalData }) => {
+const Dashboard = ({ hospitalsGlobalData, testsGlobalData }) => {
   const {
     sexe,
     departement,
@@ -24,34 +26,46 @@ const Dashboard = ({ hospitalsGlobalData }) => {
     endDate,
     setEndDate,
   } = useContext(FiltersContext);
+  const { type } = useContext(GraphContext);
 
-  let history = getHistory(
+  const history = getHistory(
     hospitalsGlobalData,
     startDate,
     endDate,
     sexe,
     departement
   );
-  console.log("perf1");
-  let hospitalsData = getHospitalsData(
-    hospitalsGlobalData,
-    "2020-11-04",
-    sexe,
-    departement
-  ); // hardcoded day | to be chosen in a selector
-  console.log("perf2");
-  let hospitalsDataDayBefore = getHospitalsData(
-    hospitalsGlobalData,
-    "2020-11-03",
-    sexe,
-    departement
-  ); // hardcoded day | to be day - 1 from the previous one
-  console.log("perf3");
+  const endDateHospitalData = history[history.length - 1];
+  const endDateDayBeforeHospitalData =
+    history.length >= 2 ? history[history.length - 2] : endDateHospitalData;
+
   const delta = {
-    hosp: hospitalsData.hosp - hospitalsDataDayBefore.hosp,
-    rea: hospitalsData.rea - hospitalsDataDayBefore.rea,
-    dc: hospitalsData.dc - hospitalsDataDayBefore.dc,
-    rad: hospitalsData.rad - hospitalsDataDayBefore.rad,
+    hosp: endDateHospitalData.hosp - endDateDayBeforeHospitalData.hosp,
+    rea: endDateHospitalData.rea - endDateDayBeforeHospitalData.rea,
+    dc: endDateHospitalData.dc - endDateDayBeforeHospitalData.dc,
+    rad: endDateHospitalData.rad - endDateDayBeforeHospitalData.rad,
+  };
+
+  const tests = getTestsData(testsGlobalData, startDate, endDate, departement);
+  const endDateTests = tests.length >= 1 ? tests[tests.length - 1] : null;
+  const endDateDayBeforeTests =
+    tests.length >= 2 ? tests[tests.length - 2] : endDateTests;
+
+  console.log(tests);
+
+  const deltaTests = {
+    P: endDateDayBeforeTests.P - endDateTests.P,
+    T: endDateDayBeforeTests.T - endDateTests.T,
+  };
+
+  const dataChart = (data, type) => {
+    return data.map((datum) => {
+      let newObj = {};
+      newObj.jour = datum.jour;
+      newObj.value = datum[type];
+      return newObj;
+    });
+    // value for the chart
   };
 
   return (
@@ -88,14 +102,19 @@ const Dashboard = ({ hospitalsGlobalData }) => {
       </div>
       {/* main infos */}
       <div className="mx-4 my-4">
-        <DailySummary hospitalsData={hospitalsData} delta={delta} />
+        <DailySummary
+          hospitalsData={endDateHospitalData}
+          delta={delta}
+          tests={endDateTests}
+          deltaTests={deltaTests}
+        />
       </div>
       {/* <div className="mx-4">
         <LineChart history={history} />
       </div> */}
       {/* d3 practice */}
       <div className="mx-4">
-        <AreaChart history={history} />
+        <AreaChart dataSet={dataChart(history, type)} />
       </div>
       {/* history */}
       {/* <div>

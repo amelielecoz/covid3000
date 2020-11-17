@@ -6,6 +6,7 @@ const FiltersState = (props) => {
   const [departement, setDepartement] = useState("tous"); // default "tous"
   const [startDate, setStartDate] = useState(new Date("2020-03-15"));
   const [endDate, setEndDate] = useState(new Date());
+  const [type, setType] = useState("hosp");
 
   return (
     <FiltersContext.Provider
@@ -18,6 +19,8 @@ const FiltersState = (props) => {
         setStartDate,
         endDate,
         setEndDate,
+        type,
+        setType,
       }}
     >
       {props.children}

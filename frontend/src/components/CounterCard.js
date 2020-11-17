@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 
-const Counter = ({ number, delta, text }) => {
+import GraphContext from "../context/filtersContext";
+
+const Counter = ({ number, delta, text, type }) => {
+  const { setType } = useContext(GraphContext);
   const frenchFormatter = new Intl.NumberFormat("fr-FR");
 
+  // #TODO
+  // RENDRE DYNAMIQUE LES COULEURS DE BORDURES et le svg conditionnel selon le delta
   const getColor = (type) => {
-    if (delta < 0 || text === "retours") {
+    if (delta < 0 || text === "retours" || text === "tests") {
       if (type === "text") return "text-green-500";
       if (type === "border") return "border-green-500";
       return "#48BB78";
@@ -21,30 +26,31 @@ const Counter = ({ number, delta, text }) => {
     }
   };
 
-  // #TODO
-  // RENDRE DYNAMIQUE LES COULEURS DE BORDURES et le svg conditionnel selon le delta
-
   return (
     <div
-      className={`w-24 h-20 bg-white rounded shadow border-b-4 ${getColor(
+      onClick={() => {
+        setType(type);
+        console.log("type");
+      }}
+      className={`w-24 pb-1  bg-white rounded shadow border-b-4 ${getColor(
         "border"
       )} text-center`}
     >
-      <div className="text-xs text-gray-700 font-semibold">{text}</div>
-      <svg
-        className="h-3 w-3 inline"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 20 20"
-        fill={getColor()}
-      >
-        <path d="M7 10v8h6v-8h5l-8-8-8 8h5z" />
-      </svg>
-      <span className={`text-xs ${getColor("text")}`}>
-        ({frenchFormatter.format(delta)})
-      </span>
-      <div className="text-2xl text-black">
-        <span>{frenchFormatter.format(number)}</span>
+      <div className="h-2 text-xs text-gray-700 font-semibold">{text}</div>
+      <div className="my-1">
+        <svg
+          className="h-3 w-3 inline "
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill={getColor()}
+        >
+          <path d="M7 10v8h6v-8h5l-8-8-8 8h5z" />
+        </svg>
+        <span className={`text-xs ${getColor("text")}`}>
+          ({frenchFormatter.format(delta)})
+        </span>
       </div>
+      <div className="h-4 -mt-2">{frenchFormatter.format(number)}</div>
     </div>
   );
 };

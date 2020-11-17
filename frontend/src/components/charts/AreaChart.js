@@ -5,9 +5,8 @@ import * as d3 from "d3";
 
 import "./BarChart.css";
 
-const BarChart = ({ history }) => {
+const BarChart = ({ dataSet }) => {
   /* D3 Practice*/
-  const DAY_HISTORY = 365;
   const svgWidth = 343;
   const svgHeight = 170;
   const svgEl = useRef(null);
@@ -16,13 +15,13 @@ const BarChart = ({ history }) => {
   const margin = { top: 20, right: 30, bottom: 30, left: 40 };
 
   // Set of data to work with
-  const historyHosp = history
+  const data = dataSet
     .slice()
-    .map(({ jour, hosp }) => ({ jour: new Date(jour), hosp }));
+    .map(({ jour, value }) => ({ jour: new Date(jour), value }));
 
   useEffect(() => {
     // console.log("Starting");
-    const [min, max] = d3.extent(historyHosp, (d) => d.jour);
+    const [min, max] = d3.extent(data, (d) => d.jour);
 
     const x = d3
       .scaleUtc()
@@ -31,7 +30,7 @@ const BarChart = ({ history }) => {
 
     const y = d3
       .scaleLinear()
-      .domain([0, d3.max(historyHosp, (d) => d.hosp)])
+      .domain([0, d3.max(data, (d) => d.value)])
       .nice()
       .range([svgHeight - margin.bottom, margin.top]);
 
@@ -47,29 +46,20 @@ const BarChart = ({ history }) => {
       g
         .attr("transform", `translate(${margin.left},0)`)
         .call(d3.axisLeft(y))
-        .call((g) => g.select(".domain").remove())
-        .call((g) =>
-          g
-            .select(".tick:last-of-type text")
-            .clone()
-            .attr("x", 3)
-            .attr("text-anchor", "start")
-            .attr("font-weight", "bold")
-            .text("hosp")
-        );
+        .call((g) => g.select(".domain").remove());
 
     // const line = d3
     //   .line()
-    //   .defined((d) => !isNaN(d.hosp))
+    //   .defined((d) => !isNaN(d.value))
     //   .x((d) => x(new Date(d.jour)))
-    //   .y((d) => y(d.hosp));
+    //   .y((d) => y(d.value));
 
     const area = d3
       .area()
       .curve(d3.curveLinear)
       .x((d) => x(new Date(d.jour)))
       .y0(y(0))
-      .y1((d) => y(d.hosp));
+      .y1((d) => y(d.value));
 
     const svg = d3
       .select(svgEl.current)
@@ -82,8 +72,9 @@ const BarChart = ({ history }) => {
     svg.select(".yAxis").call(yAxis);
 
     d3.select(pathEl.current)
-      .datum(historyHosp)
+      .datum(data)
       .attr("fill", "steelblue")
+      .classed("show", true)
       //   .attr("stroke", "steelblue")
       //   .attr("stroke-width", 0.5)
       //   .attr("stroke-linejoin", "round")
@@ -93,13 +84,13 @@ const BarChart = ({ history }) => {
     //TOOLTIP
     const tooltip = svg.append("g");
     svg.on("touchmove mousemove", function (event) {
-      const { jour, hosp } = bisect(d3.pointer(event, this)[0]);
+      const { jour, value } = bisect(d3.pointer(event, this)[0]);
       console.log(jour);
-      console.log(hosp);
+      console.log(value);
 
-      tooltip.attr("transform", `translate(${x(jour)},${y(hosp)})`).call(
+      tooltip.attr("transform", `translate(${x(jour)},${y(value)})`).call(
         callout,
-        `${hosp}
+        `${value}
       ${formatDate(jour)}`
       );
     });
@@ -109,18 +100,18 @@ const BarChart = ({ history }) => {
     const bisectDate = d3.bisector((d) => d.jour).left;
     function bisect(mx) {
       const jour = x.invert(mx);
-      const index = bisectDate(historyHosp, jour, 1);
-      const a = historyHosp[index - 1];
-      const b = historyHosp[index];
+      const index = bisectDate(data, jour, 1);
+      const a = data[index - 1];
+      const b = data[index];
       return b && jour - a.jour > b.jour - jour ? b : a;
     }
-  }, [svgEl, historyHosp]);
+  }, [svgEl, data]);
 
   return (
     <svg ref={svgEl}>
       <g className="xAxis"></g>
       <g className="yAxis"></g>
-      <path ref={pathEl}></path>
+      <path ref={pathEl} fill="steelblue"></path>
     </svg>
   );
 };
@@ -132,9 +123,7 @@ export default BarChart;
 const callout = (g, value) => {
   if (!value) return g.style("display", "none");
 
-  g.style("display", null)
-    .style("pointer-events", "none")
-    .attr("class")
+  g.style("display", null).style("pointer-events", "none").attr("class");
 
   const path = g
     .selectAll("path")
