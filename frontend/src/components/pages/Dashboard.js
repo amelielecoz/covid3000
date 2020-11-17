@@ -5,7 +5,7 @@ import "react-day-picker/lib/style.css";
 
 import AreaChart from "../charts/AreaChart";
 import DailySummary from "../DailySummary";
-// import HistoryRow from "../HistoryRow";
+import HistoryRow from "../HistoryRow";
 // import LineChart from "../charts/LineChart";
 import SelectSexe from "../SelectSexe";
 import SelectDepartement from "../SelectDepartement";
@@ -114,17 +114,23 @@ const Dashboard = ({ hospitalsGlobalData, testsGlobalData }) => {
       </div> */}
       {/* d3 practice */}
       <div className="mx-4">
-        <AreaChart dataSet={dataChart(history, type)} />
+        <AreaChart
+          dataSet={
+            type === "T" || type === "P"
+              ? dataChart(tests, type)
+              : dataChart(history, type)
+          }
+        />
       </div>
       {/* history */}
-      {/* <div>
+      <div>
         {history
           .slice()
           .reverse()
           .map((data) => (
             <HistoryRow data={data} key={data.jour} />
           ))}
-      </div> */}
+      </div>
     </div>
   );
 };

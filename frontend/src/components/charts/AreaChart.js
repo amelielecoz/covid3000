@@ -1,11 +1,15 @@
 // JOIN() ENTER/UPDATE/EXIT D3 PATTERN
 
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useContext } from "react";
+
+import GraphContext from "../../context/graphContext";
 import * as d3 from "d3";
 
 import "./BarChart.css";
 
 const BarChart = ({ dataSet }) => {
+  const { type } = useContext(GraphContext);
+
   /* D3 Practice*/
   const svgWidth = 343;
   const svgHeight = 170;
@@ -73,10 +77,10 @@ const BarChart = ({ dataSet }) => {
 
     d3.select(pathEl.current)
       .datum(data)
-      .attr("fill", "steelblue")
+      .attr("fill", getColor(type))
       .classed("show", true)
-      //   .attr("stroke", "steelblue")
-      //   .attr("stroke-width", 0.5)
+      // .attr("stroke", "red")
+      // .attr("stroke-width", 0.5)
       //   .attr("stroke-linejoin", "round")
       //   .attr("stroke-linecap", "round")
       .attr("d", area);
@@ -108,11 +112,20 @@ const BarChart = ({ dataSet }) => {
   }, [svgEl, data]);
 
   return (
-    <svg ref={svgEl}>
-      <g className="xAxis"></g>
-      <g className="yAxis"></g>
-      <path ref={pathEl} fill="steelblue"></path>
-    </svg>
+    <div>
+      <div
+        className={`inline-block rounded px-1  text-xs text-white ${getColor(
+          type
+        )}`}
+      >
+        Hospitalisations
+      </div>
+      <svg ref={svgEl}>
+        <g className="xAxis"></g>
+        <g className="yAxis"></g>
+        <path ref={pathEl} fill={getColor(type)}></path>
+      </svg>
+    </div>
   );
 };
 
@@ -163,4 +176,23 @@ function formatDate(date) {
     year: "numeric",
     timeZone: "UTC",
   });
+}
+
+function getColor(type) {
+  switch (type) {
+    case "hosp":
+      return "steelblue";
+    case "rea":
+      return "#F6E05E";
+    case "dc":
+      return "#553C9A";
+    case "rad":
+      return "#48BB78";
+    case "T":
+      return "#667EEA";
+    case "P":
+      return "#ED64A6";
+    default:
+      return "black";
+  }
 }

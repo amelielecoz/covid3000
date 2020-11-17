@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 
-import GraphContext from "../context/filtersContext";
+import GraphContext from "../context/graphContext";
 
 const Counter = ({ number, delta, text, type }) => {
   const { setType } = useContext(GraphContext);
@@ -34,7 +34,7 @@ const Counter = ({ number, delta, text, type }) => {
       }}
       className={`w-24 pb-1  bg-white rounded shadow border-b-4 ${getColor(
         "border"
-      )} text-center`}
+      )} text-center transition duration-500 ease-in-out hover:shadow-xl hover:bg-blue-100 transform hover:-translate-y-1 hover:scale-110 `}
     >
       <div className="h-2 text-xs text-gray-700 font-semibold">{text}</div>
       <div className="my-1">

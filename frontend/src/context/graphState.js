@@ -3,7 +3,7 @@ import GraphContext from "./graphContext";
 
 const GraphState = (props) => {
   const [type, setType] = useState("hosp");
-  
+  const [color, setColor] = useState("steelblue");
 
   return (
     <GraphContext.Provider
