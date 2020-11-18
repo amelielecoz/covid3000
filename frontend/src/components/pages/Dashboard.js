@@ -127,8 +127,19 @@ const Dashboard = ({ hospitalsGlobalData, testsGlobalData }) => {
         {history
           .slice()
           .reverse()
-          .map((data) => (
-            <HistoryRow data={data} key={data.jour} />
+          .map((data, i, arr) => (
+            <>
+              {i >= 1 && checkNewMonth(data.jour, arr[i - 1].jour) && (
+                <div className="mt-2 ">
+                  <span className="uppercase  pl-4 pr-8 rounded-r bg-gray-700 text-white">
+                    {new Date(data.jour).toLocaleDateString("fr-FR", {
+                      month: "long",
+                    })}
+                  </span>
+                </div>
+              )}
+              <HistoryRow data={data} key={data.jour} />
+            </>
           ))}
       </div>
     </div>
@@ -136,3 +147,16 @@ const Dashboard = ({ hospitalsGlobalData, testsGlobalData }) => {
 };
 
 export default Dashboard;
+
+// helpers
+
+function checkNewMonth(day, dayBefore) {
+  const jourDate = new Date(day).toLocaleDateString("fr-FR", {
+    month: "long",
+  });
+  const jourPrecedent = new Date(dayBefore).toLocaleDateString("fr-FR", {
+    month: "long",
+  });
+  if (jourDate !== jourPrecedent) return true;
+  else return false;
+}

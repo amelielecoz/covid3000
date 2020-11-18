@@ -42,7 +42,7 @@ const BarChart = ({ dataSet }) => {
       g.attr("transform", `translate(0,${svgHeight - margin.bottom})`).call(
         d3
           .axisBottom(x)
-          .ticks(svgWidth / 25)
+          .ticks(svgWidth / 55)
           .tickSizeOuter(0)
       );
 
@@ -96,7 +96,7 @@ const BarChart = ({ dataSet }) => {
         callout,
         `${value}
       ${formatDate(jour)}`
-      );
+      ); 
     });
 
     svg.on("touchend mouseleave", () => tooltip.call(callout, null));
@@ -181,18 +181,18 @@ function formatDate(date) {
 function getColor(type) {
   switch (type) {
     case "hosp":
-      return "#2D3748";
+      return "steelblue";
     case "rea":
-      return "#2D3748";
+      return "steelblue";
     case "dc":
-      return "#2D3748";
+      return "steelblue";
     case "rad":
-      return "#2D3748";
+      return "steelblue";
     case "T":
-      return "#2D3748";
+      return "steelblue";
     case "P":
-      return "#2D3748";
+      return "steelblue";
     default:
-      return "black";
+      return "steelblue";
   }
 }
